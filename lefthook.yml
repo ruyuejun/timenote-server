@@ -1,0 +1,92 @@
+pre-commit:
+    parallel: false
+    commands:
+        format:
+            glob: '*.{js,ts,cjs,mjs,jsx,tsx,svelte}'
+            exclude: 'drizzle/|logs/|node_modules/|dist/|build/'
+            run: pnpm exec oxfmt --write {staged_files}
+            stage_fixed: true
+        lint:
+            glob: '*.{js,ts,cjs,mjs,jsx,tsx,svelte}'
+            exclude: 'drizzle/|logs/|node_modules/|dist/|build/'
+            run: |
+                echo "🔍 Running lint check on staged files..."
+                # oxlint 默认只在有 errors 时返回非 0，我们需要检查 warnings
+                LINT_OUTPUT=$(pnpm exec oxlint {staged_files} 2>&1)
+                LINT_EXIT=$?
+                echo "$LINT_OUTPUT"
+
+                # 检查是否有 warnings 或 errors
+                if echo "$LINT_OUTPUT" | grep -q "Found.*warnings\|Found.*errors"; then
+                    if echo "$LINT_OUTPUT" | grep -qE "Found [1-9][0-9]* warnings|Found [1-9][0-9]* errors"; then
+                        echo ""
+                        echo "========================================"
+                        echo "❌ Lint failed! Commit is blocked."
+                        echo "Fix the errors above and try again:"
+                        echo "1. Run 'pnpm run lint' to see all errors"
+                        echo "2. Run 'pnpm run lint:fix' to auto-fix (if possible)"
+                        echo "3. Fix remaining errors manually"
+                        echo "========================================"
+                        exit 1
+                    fi
+                fi
+                echo "✅ Lint check passed"
+        build:
+            glob: '*.{js,ts,cjs,mjs,jsx,tsx,svelte}'
+            exclude: 'drizzle/|logs/|node_modules/|dist/|build/'
+            run: |
+                echo "📦 Starting build check..."
+                if ! pnpm run build; then
+                    echo ""
+                    echo "========================================"
+                    echo "❌ Build failed! Commit is blocked!"
+                    echo "Fix the build errors first:"
+                    echo "1. Run 'pnpm run build' to inspect the errors"
+                    echo "2. Fix all TypeScript and syntax errors"
+                    echo "3. Ensure all dependencies are installed"
+                    echo "========================================"
+                    exit 1
+                fi
+                echo "✅ Build check passed"
+
+commit-msg:
+    commands:
+        commit-check:
+            run: |
+                echo "🔍 Validating commit message format with commitlint..."
+                if ! node_modules/.bin/commitlint --edit "$1"; then
+                  echo ""
+                  echo "❌ Validation failed: ensure the format is <type>(<scope>): <subject>"
+                  echo "The scope must be selected from the predefined list."
+                  exit 1
+                fi
+                echo "✅ Validation passed"
+
+# lefthook.yml
+pre-push:
+    parallel: false
+    piped: true
+    commands:
+        build-check:
+            run: |
+                echo "📦 Starting build check..."
+
+                # Check whether frontend-related files have changed
+                CHANGED_FILES=$(git diff --name-only HEAD @{u} 2>/dev/null || git diff --name-only HEAD origin/main)
+                if echo "$CHANGED_FILES" | grep -qE '\.(js|ts|vue|jsx|tsx|svelte|css|scss|html|json)$'; then
+                  echo "Frontend file changes detected; running the build check..."
+                  if ! pnpm run build; then
+                    echo ""
+                    echo "========================================"
+                    echo "❌ Build failed; pushing is blocked!"
+                    echo "Fix the build errors first:"
+                    echo "1. Run 'pnpm run build' to inspect the errors"
+                    echo "2. Fix all TypeScript and syntax errors"
+                    echo "3. Ensure all dependencies are installed"
+                    echo "========================================"
+                    exit 1
+                  fi
+                  echo "✅ Build check passed"
+                else
+                  echo "No frontend file changes detected; skipping the build check"
+                fi

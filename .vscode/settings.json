@@ -1,0 +1,104 @@
+{
+    "code-runner.runInTerminal": true,
+    "prettier.enable": false,
+    "editor.defaultFormatter": "oxc.oxc-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+    "oxc.enable.oxfmt": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports.oxc": "explicit",
+        "source.fixAll.oxc": "explicit",
+        "source.removeUnusedImports.oxc": "explicit"
+    },
+    "workbench.editor.enablePreview": false,
+    "scss.lint.unknownAtRules": "ignore",
+    "css.lint.unknownAtRules": "ignore",
+    "[html]": {
+        "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "[css]": {
+        "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "[scss]": {
+        "editor.defaultFormatter": "vscode.css-language-features"
+    },
+    "[postcss]": {
+        "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "[svelte]": {
+        "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "[jsx-tags]": {
+        "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "[yaml]": {
+        "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "[yml]": {
+        "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "[mjs]": {
+        "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "[markdown]": {
+        "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
+        "editor.wordWrap": "on",
+        "editor.quickSuggestions": {
+            "comments": "off",
+            "strings": "off",
+            "other": "off"
+        },
+        "editor.tabSize": 4,
+        "editor.useTabStops": true
+    },
+    "gopls": {
+        "experimentalWorkspaceModule": true
+    },
+    "go.testFlags": ["-v"],
+    "files.associations": {
+        "array": "c",
+        "string": "c",
+        "string_view": "c",
+        "vector": "c",
+        "__locale": "c",
+        "__string": "c",
+        "__node_handle": "c",
+        "circlelist.h": "c",
+        "static.h": "c",
+        "stdlib.h": "c"
+    },
+    "auto-close-tag.activationOnLanguage": [
+        "xml",
+        "php",
+        "blade",
+        "ejs",
+        "jinja",
+        "plaintext",
+        "liquid",
+        "erb",
+        "lang-cfml",
+        "cfml",
+        "HTML (EEx)",
+        "HTML (Eex)",
+        "plist"
+    ],
+    "search.useReplacePreview": false,
+    "editor.cursorStyle": "line",
+    "svn.ignoreMissingSvnWarning": true,
+    "js/ts.tsdk.path": "node_modules/typescript/lib"
+}

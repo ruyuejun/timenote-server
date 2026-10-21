@@ -1,0 +1,12 @@
+{
+    "rules": {
+        "typescript": "error",
+        "import": "error",
+        "typescript/no-unused-vars": "error",
+        "import/no-unused-modules": "error"
+    },
+    "env": {
+        "node": true
+    },
+    "ignore_patterns": ["node_modules", "dist", "release", "drizzle", "logs"]
+}
